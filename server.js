@@ -5,17 +5,22 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import bugRoutes from './routes/bugRoutes.js';
-import morgan from 'morgan';
+
 
 
 dotenv.config();
 const app = express();
 
-app.use(morgan('combined'))
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+} else {
+  app.use(morgan('dev'));
+}
+
+
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(morgan('dev'));
 
 app.use('/api/bugs', bugRoutes);
 
